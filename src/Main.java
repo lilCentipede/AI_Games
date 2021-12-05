@@ -1,3 +1,5 @@
+import nqueens.QueensSimulation;
+
 import java.util.Scanner;
 
 public class Main {
@@ -6,10 +8,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         //System.out.println(scanner);
         while(scanner.hasNextInt()) {
-            QueensBoard board = new QueensBoard(scanner.nextInt());
-            board.visualize();
-            QueenStrategy strategy = new QueenStrategy(board);
-            strategy.solve();
+            QueensSimulation.simulate(scanner.nextInt());
         }
         scanner.close();
     }
