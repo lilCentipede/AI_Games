@@ -1,15 +1,20 @@
 package nqueens;
 
+import Commons.Board;
+import Commons.Common;
+
 import java.util.*;
 
 //takes care of setting up the board
-public class QueensBoard {
+public class QueensBoard implements Board {
     private final int size;
     private final List<Queen> all_queens;
+    private int sumConflicts;
     private final Character[][] board;
     public QueensBoard(int size){
         this.size = size;
         all_queens = new ArrayList<>(size);
+        sumConflicts = 0;
         board = new Character[size][size];
         setupBoard();
         placeAllQueensForFirstTime();
@@ -18,6 +23,7 @@ public class QueensBoard {
     public QueensBoard(QueensBoard other_board){
         this.size = other_board.size;
         this.all_queens = new ArrayList<>(size);
+        this.sumConflicts = other_board.sumConflicts;
         this.board = new Character[size][size];
         setupBoard();
         placeQueensForCopyConstructor(other_board);
@@ -33,7 +39,8 @@ public class QueensBoard {
     List<Queen> getAll_queens(){
         return all_queens;
     }
-    int getSize(){return size;}
+    public int getSize(){return size;}
+    int getSumConflicts(){return sumConflicts;}
 
     public boolean placeQueen(Queen new_queen){
         all_queens.add(new_queen);
@@ -59,7 +66,7 @@ public class QueensBoard {
             }
         }
     }
-    private void setupBoard(){
+    public void setupBoard(){
         for(int i = 0 ; i < size ; i++){
             for(int j = 0 ; j < size ; j++){
                 board[i][j] = '*';
@@ -73,11 +80,11 @@ public class QueensBoard {
     }
     public int sumTheirConflicts(){
         setTheirConflicts();
-        int sum = 0;
+        sumConflicts = 0;
         for(Queen queen : all_queens){
-            sum += queen.getConflicts();
+            sumConflicts += queen.getConflicts();
         }
-        return sum;
+        return sumConflicts;
     }
     public void viewQueensPositions(){
         for(Queen queen : all_queens){

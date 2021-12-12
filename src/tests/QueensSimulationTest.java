@@ -3,27 +3,28 @@ package tests;
 import nqueens.QueensBoard;
 import nqueens.QueensSimulation;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class QueensSimulationTest {
 
     @org.junit.jupiter.api.Test
-    void simulate100() {
-        for(int i = 0; i < 100; i++) {
-            Assertions.assertTrue(QueensSimulation.simulate(60));
-        }
-    }
-    @org.junit.jupiter.api.Test
-    void simulate1() {
+    void simulate6() {
             Assertions.assertTrue(QueensSimulation.simulate(6));
     }
     @org.junit.jupiter.api.Test
-    void simulate() {
-            Assertions.assertTrue(QueensSimulation.simulate(400));
+    void simulate100() {
+            Assertions.assertTrue(QueensSimulation.simulate(100));
+    }
+    @org.junit.jupiter.api.Test
+    void simulate500() {
+            Assertions.assertTrue(QueensSimulation.simulate(500));
 
     }
+    @org.junit.jupiter.api.Test
+    void simulate1000() {
+        Assertions.assertTrue(QueensSimulation.simulate(1000));
+
+    }
+
 
     @org.junit.jupiter.api.Test
     void AreBoardAndItsCopyEqual() {

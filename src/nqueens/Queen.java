@@ -1,52 +1,14 @@
 package nqueens;
 
+import Commons.Position;
+
 import java.util.List;
 import java.util.Objects;
 
 public class Queen {
     private Position position;
     private int conflicts;
-    private static class Position{
-        int row;
-        int column;
-        final int size_of_board;
-        Position(int size_of_board){
-            this.size_of_board = size_of_board;
-            this.row = 0;
-            this.column =0;
-        }
-        Position(Position other_position){
-            this.size_of_board = other_position.size_of_board;
-            this.column = other_position.column;
-            this.row = other_position.row;
-        }
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Position position = (Position) o;
-            return row == position.row && column == position.column && size_of_board == position.size_of_board;
-        }
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(row, column, size_of_board);
-        }
-
-        @Override
-        public String toString() {
-            return "Position{" +
-                    "row=" + row +
-                    ", column=" + column +
-                    '}';
-        }
-
-        Position setPosition(int row, int column){
-            this.row = row;
-            this.column = column;
-            return this;
-        }
-    }
     Queen(int row, int column, int size){
         this.position = new Position(size).setPosition(row,column);
         this.conflicts = 0;
@@ -64,8 +26,8 @@ public class Queen {
         position.setPosition(row,column);
     }
 
-    int getRow(){return position.row;}
-    int getColumn(){return position.column;}
+    int getRow(){return position.getRow();}
+    int getColumn(){return position.getColumn();}
 
     int getConflicts(){return conflicts;}
     void setConflicts(List<Queen> all_queens){
@@ -85,9 +47,9 @@ public class Queen {
     }
 
     boolean hasConflictWith(Queen other_queen){
-        return (this.position.row == other_queen.position.row ||
-                this.position.column == other_queen.position.column ||
-                Math.abs(this.position.row - other_queen.position.row) == Math.abs(this.position.column - other_queen.position.column));
+        return (this.position.getRow() == other_queen.position.getRow() ||
+                this.position.getColumn() == other_queen.position.getColumn() ||
+                Math.abs(this.position.getRow() - other_queen.position.getRow()) == Math.abs(this.position.getColumn() - other_queen.position.getColumn()));
     }
 
     @Override

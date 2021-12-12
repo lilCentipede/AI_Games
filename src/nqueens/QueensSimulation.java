@@ -10,7 +10,7 @@ public class QueensSimulation {
         while (!result) {
            QueensBoard board = new QueensBoard(board_size);
             ++j;
-           //board.visualize();
+          // board.visualize();
             QueenStrategy strategy = new QueenStrategy(board);
             result = strategy.solve();
         }

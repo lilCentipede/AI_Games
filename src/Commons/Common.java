@@ -1,4 +1,4 @@
-package nqueens;
+package Commons;
 
 public  class Common {
 

@@ -1,32 +1,37 @@
 package nqueens;
 
-import javax.swing.text.Position;
+import Commons.Common;
+import Commons.Strategy;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class QueenStrategy {
+public class QueenStrategy implements Strategy {
     private QueensBoard board;
     QueenStrategy(QueensBoard board){
         this.board = board;
     }
 
+    @Override
     public boolean solve(){
         int i = 0;
-        int k = 2;
+        double k = 2;
         Queen previous_queen = new Queen(board.getSize());
         while(!board.isSolved() ){
             List<Queen> maxQueens = queenMaxConflicts(previous_queen);
             board = bestOptionForBoard(maxQueens);
             //board.viewQueensPositions();
             ++i;
+           // System.out.println("----------------------------------------");
            // board.visualize();
+           // System.out.println("----------------------------------------");
             if( i > k*board.getSize()){
                 return false;
             }
         }
         System.out.println("On " + i + "th try");
-        board.visualize();
+        //board.visualize();
         return true;
     }
 
@@ -43,17 +48,25 @@ public class QueenStrategy {
     }
 
     public QueensBoard bestOptionForBoard(List<Queen> maxQueens){
-        QueensBoard bestBoard = new QueensBoard(board.getSize());
+        List<QueensBoard> allBoards = new ArrayList<>();
+        List<QueensBoard> bestBoards = new ArrayList<>();
         int minConflicts = Integer.MAX_VALUE;
         for(var queen : maxQueens){
             QueensBoard scenario_board = createScenarioBoardFor(queen);
-            int sum = scenario_board.sumTheirConflicts();
+             int sum = scenario_board.sumTheirConflicts();
+             allBoards.add(scenario_board);
             if(minConflicts > sum){
                 minConflicts = sum;
-                bestBoard = scenario_board;
             }
         }
-        return bestBoard;
+        for(var board : allBoards){
+            int sum = board.getSumConflicts();
+            if(minConflicts == sum){
+                bestBoards.add(board);
+            }
+        }
+        int luckyNumber = Common.getRandomNumberFromZeroTo(bestBoards.size());
+        return bestBoards.get(luckyNumber);
     }
     public QueensBoard createScenarioBoardFor(Queen queen){
         QueensBoard scenario_board = new QueensBoard(board);
@@ -65,7 +78,6 @@ public class QueenStrategy {
         return scenario_board;
     }
 
-
     public int randomChooseRowWithMinConflicts(List<Integer> rows_with_minimal_conflicts,Queen queen) {
         int luckyNumber = Common.getRandomNumberFromZeroTo(rows_with_minimal_conflicts.size());
         return rows_with_minimal_conflicts.get(luckyNumber);
@@ -73,7 +85,7 @@ public class QueenStrategy {
     public List<Integer> positionsWithMinConflictsForChosenQueen(QueensBoard scenario_board,Queen queen){
         HashMap<Integer,Integer> rows_conflicts = scenario_board.getConflictsOnEveryPositionFor(queen);
         List<Integer> rowWithMinConflicts= new ArrayList<>();
-        int min_conflicts = scenario_board.getSize();
+        int min_conflicts = Integer.MAX_VALUE;
         for(var row : rows_conflicts.keySet()){
             if(min_conflicts > rows_conflicts.get(row)){
                 min_conflicts = rows_conflicts.get(row);
